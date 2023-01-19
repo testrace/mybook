@@ -1,13 +1,18 @@
 package com.juvorak.mybook.api;
 
-import lombok.Data;
+import java.util.List;
 
-@Data
-public class Isbn {
+public record Isbn(String value) {
 
-    private String value;
+    private static final List<Integer> VALID_ISBN_LENGTHS = List.of(10, 13);
 
-    public Isbn(String value) {
-        this.value = value;
+    public Isbn {
+        validateLength(value);
+    }
+
+    private void validateLength(String value) {
+        if (!VALID_ISBN_LENGTHS.contains(value.length())) {
+            throw new IllegalArgumentException("ISBN은 10자리 또는 13자리여야 합니다.");
+        }
     }
 }
